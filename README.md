@@ -1,98 +1,137 @@
 # portfolio-1-database-design
-# Database Normalization – Bright Future University
+# Bright Future University – Student Management Database
 
-## 1. Introduction
+## 1. Project Overview
 
-Database normalization is the process of organizing data into related tables to reduce data redundancy, prevent data anomalies, and improve data integrity.
+This project focuses on the design and implementation of a relational database for **Bright Future University**, a simulated university institution.
 
-The Bright Future University Student Management System was designed using PostgreSQL and organized into six related tables.
+The database is designed to manage academic information, including student records, departments, lecturers, courses, course registrations and examination results.
 
-The database follows the principles of First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF).
+The project demonstrates practical application of relational database design, SQL, primary and foreign keys, database constraints and normalisation.
 
-## 2. First Normal Form (1NF)
+## 2. Case Study Description
 
-A database table satisfies First Normal Form when:
+Bright Future University requires a structured database system to organise and manage its academic records.
 
-- Each column contains atomic (single) values.
-- Each record is unique.
-- There are no repeating groups or multiple values stored in one column.
+The database serves the following users:
 
-**Application to our database:**
+- **Administrators:** Manage student, department and lecturer records.
+- **Lecturers:** Access course information and academic results.
+- **Students:** Have their course registration and academic result records maintained.
 
-Each of the six tables stores individual pieces of information in separate columns.
+The major information stored includes student details, department information, lecturer records, course details, course registrations and examination results.
 
-For example, the `students` table stores a student's first name and last name separately rather than combining multiple student details into one field.
+The database supports operations such as registering students for courses, maintaining academic records, associating lecturers with courses and recording examination scores.
 
-The `course_registrations` table also stores each course registration as a separate record.
+## 3. Project Objectives
 
-Therefore, the database satisfies the requirements of 1NF.
+The objectives of this project are to:
 
-## 3. Second Normal Form (2NF)
+- Design a relational database for a university environment.
+- Identify entities and their relationships.
+- Create tables using PostgreSQL.
+- Define primary keys and foreign keys.
+- Apply appropriate database constraints.
+- Demonstrate database normalisation.
+- Insert and manage sample academic records.
+- Document the database design and implementation.
 
-A table satisfies Second Normal Form when:
+## 4. Technologies Used
 
-- It is already in 1NF.
-- Every non-key attribute depends on the whole candidate key.
-- There are no partial dependencies.
+- **PostgreSQL:** Relational database management system.
+- **pgAdmin 4:** Database administration and development tool.
+- **SQL:** Database definition and data management.
+- **GitHub:** Project version control and documentation.
 
-**Application to our database:**
+## 5. Database Information
 
-Most tables use single-column primary keys, including:
+**Database Name:** `bright_future_university`
 
-- `student_id` in the students table.
-- `department_id` in the departments table.
-- `lecturer_id` in the lecturers table.
-- `course_id` in the courses table.
-- `registration_id` in the course_registrations table.
+The database contains six main tables:
 
-The `course_registrations` table also has a unique constraint involving student, course, academic year, and semester to prevent duplicate registrations.
+| Table | Description |
+|---|---|
+| departments | Stores university department information. |
+| students | Stores student records. |
+| lecturers | Stores lecturer information. |
+| courses | Stores available courses. |
+| course_registrations | Stores student course registration records. |
+| results | Stores students' academic results. |
 
-The attributes in the tables are associated with their respective keys rather than depending on only part of a composite key.
+## 6. Relational Database Design
 
-Therefore, the database satisfies 2NF.
+The database uses relationships between the six tables to organise academic information and reduce unnecessary data duplication.
 
-## 4. Third Normal Form (3NF)
+The main relationships include:
 
-A table satisfies Third Normal Form when:
+- Departments are associated with students, lecturers and courses.
+- Students register for courses through the course_registrations table.
+- Courses are associated with course registrations.
+- Academic results are linked to student course registrations.
 
-- It is already in 2NF.
-- There are no transitive dependencies.
-- Non-key attributes depend directly on the primary key.
+Primary keys uniquely identify records, while foreign keys establish relationships between related tables.
 
-**Application to our database:**
+## 7. Keys and Constraints
 
-The database separates information into appropriate tables to avoid unnecessary duplication.
+The database implements the following database rules:
 
-Examples include:
+- **Primary Key (PK):** Uniquely identifies each record.
+- **Foreign Key (FK):** Maintains relationships between tables.
+- **NOT NULL:** Ensures required fields contain values.
+- **UNIQUE:** Prevents duplicate values in specified columns.
+- **CHECK:** Restricts values to valid conditions.
 
-1. Department details are stored in the `departments` table rather than repeatedly entered in the students, lecturers, and courses tables.
-2. Student information is maintained in the `students` table.
-3. Lecturer information is maintained in the `lecturers` table.
-4. Course information is maintained in the `courses` table.
-5. Student course registrations are maintained in the `course_registrations` table.
-6. Students' academic results are maintained in the `results` table.
+These constraints help maintain data accuracy and referential integrity.
 
-Foreign keys connect these tables and maintain referential integrity.
+## 8. Entity Relationship Diagram (ERD)
 
-This structure prevents unnecessary repetition of information and reduces update, insertion, and deletion anomalies.
+An Entity Relationship Diagram was created using the pgAdmin ERD Tool.
 
-Therefore, the database is designed to satisfy 3NF.
+The diagram represents the six database tables, their attributes, primary keys, foreign keys and relationships.
 
-## 5. Benefits of Normalization
+The editable ERD project is included in this repository as:
 
-The normalization of the Bright Future University database provides the following benefits:
+`Bright_Future_university.pgerd`
 
-- Reduces data duplication.
-- Improves data consistency.
-- Prevents insertion, update, and deletion anomalies.
-- Maintains referential integrity through primary and foreign keys.
-- Makes database maintenance easier.
-- Improves the organization of academic records.
+## 9. Database Normalisation
 
-## 6. Conclusion
+The database design considers the first three normal forms:
 
-The Bright Future University Student Management System uses a normalized relational database structure consisting of six interconnected tables.
+- **First Normal Form (1NF):** Ensures that fields contain atomic values and that repeating groups are avoided.
+- **Second Normal Form (2NF):** Ensures that non-key attributes depend on the whole candidate key.
+- **Third Normal Form (3NF):** Ensures that non-key attributes do not depend transitively on candidate keys.
 
-The application of 1NF, 2NF, and 3NF principles helps ensure that student records, departments, lecturers, courses, registrations, and results are properly organized.
+A separate document, `normalization.md`, provides the normalisation explanation for this project.
 
+## 10. Project Files
+
+| File | Purpose |
+|---|---|
+| `01_create_schema.sql` | Creates the database tables, keys and constraints. |
+| `02_insert_sample_data.sql` | Contains sample database records. |
+| `Bright_Future_university.pgerd` | Editable Entity Relationship Diagram project. |
+| `normalization.md` | Explains database normalisation. |
+| `README.md` | Provides project information and documentation. |
+
+## 11. Database Setup
+
+To recreate the database:
+
+1. Install PostgreSQL and pgAdmin 4.
+2. Create a database named `bright_future_university`.
+3. Open the Query Tool in pgAdmin.
+4. Execute `01_create_schema.sql` to create the six tables.
+5. Restore the sample data using the supplied PostgreSQL data export with the `psql` utility.
+6. Verify the tables and their records in pgAdmin.
+7. Open the ERD project to inspect the database relationships.
+
+**Note:** The sample data export uses PostgreSQL COPY commands and should be restored using a compatible PostgreSQL restoration method.
+
+## 12. Conclusion
+
+The Bright Future University Student Management Database demonstrates the design and implementation of a relational database for managing university academic information.
+
+The project provides practical experience in database modelling, SQL implementation, relational relationships, constraints, data management and normalisation.
+
+It forms the foundation for the subsequent portfolio activities in the MIT 8103 Advanced Database Systems course.
 The resulting database provides a structured foundation for managing university academic information efficiently and reliably.
