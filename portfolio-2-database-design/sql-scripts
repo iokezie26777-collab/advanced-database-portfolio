@@ -1,0 +1,181 @@
+
+-- =========================================================
+-- PORTFOLIO 2: QUERY OPTIMISATION
+-- Bright Future University Student Management System
+-- =========================================================
+
+
+-- QUERY 1: Student Information and Departments
+
+SELECT
+    s.student_id,
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    s.email,
+    d.department_name
+FROM students s
+INNER JOIN departments d
+    ON s.department_id = d.department_id
+ORDER BY s.student_id;
+
+
+-- QUERY 2: Student Course Registrations
+
+SELECT
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    c.course_code,
+    c.course_title,
+    c.credit_units,
+    cr.academic_year,
+    cr.semester
+FROM course_registrations cr
+INNER JOIN students s
+    ON cr.student_id = s.student_id
+INNER JOIN courses c
+    ON cr.course_id = c.course_id
+ORDER BY s.matric_number, c.course_code;
+
+
+-- QUERY 3: Student Academic Performance
+
+SELECT
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    c.course_code,
+    c.course_title,
+    r.score,
+    r.grade,
+    r.remarks
+FROM results r
+INNER JOIN course_registrations cr
+    ON r.registration_id = cr.registration_id
+INNER JOIN students s
+    ON cr.student_id = s.student_id
+INNER JOIN courses c
+    ON cr.course_id = c.course_id
+ORDER BY s.matric_number, c.course_code;
+
+
+-- QUERY 4: Average Student Scores and Ranking
+
+SELECT
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    COUNT(r.registration_id) AS courses_taken,
+    ROUND(AVG(r.score), 2) AS average_score,
+    RANK() OVER (
+        ORDER BY AVG(r.score) DESC
+    ) AS student_rank
+FROM students s
+INNER JOIN course_registrations cr
+    ON s.student_id = cr.student_id
+INNER JOIN results r
+    ON cr.registration_id = r.registration_id
+GROUP BY
+    s.student_id,
+    s.matric_number,
+    s.first_name,
+    s.last_name
+ORDER BY student_rank;
+
+
+-- QUERY 5: Department Performance Analysis
+
+SELECT
+    d.department_name,
+    COUNT(DISTINCT s.student_id) AS total_students,
+    COUNT(r.registration_id) AS total_results,
+    ROUND(AVG(r.score), 2) AS average_score,
+    MAX(r.score) AS highest_score,
+    MIN(r.score) AS lowest_score
+FROM departments d
+INNER JOIN students s
+    ON d.department_id = s.department_id
+INNER JOIN course_registrations cr
+    ON s.student_id = cr.student_id
+INNER JOIN results r
+    ON cr.registration_id = r.registration_id
+GROUP BY d.department_name
+ORDER BY average_score DESC;
+
+
+-- QUERY 6: Course Performance Analysis
+
+SELECT
+    c.course_code,
+    c.course_title,
+    COUNT(r.registration_id) AS students_assessed,
+    ROUND(AVG(r.score), 2) AS average_score,
+    MAX(r.score) AS highest_score,
+    MIN(r.score) AS lowest_score
+FROM courses c
+INNER JOIN course_registrations cr
+    ON c.course_id = cr.course_id
+INNER JOIN results r
+    ON cr.registration_id = r.registration_id
+GROUP BY
+    c.course_id,
+    c.course_code,
+    c.course_title
+ORDER BY average_score DESC;
+
+
+-- QUERY 7: Students Scoring Above the Overall Average
+
+SELECT
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    ROUND(AVG(r.score), 2) AS average_score
+FROM students s
+INNER JOIN course_registrations cr
+    ON s.student_id = cr.student_id
+INNER JOIN results r
+    ON cr.registration_id = r.registration_id
+GROUP BY
+    s.student_id,
+    s.matric_number,
+    s.first_name,
+    s.last_name
+HAVING AVG(r.score) > (
+    SELECT AVG(score)
+    FROM results
+)
+ORDER BY average_score DESC;
+
+
+-- QUERY 8: Comprehensive Student Academic Report
+
+SELECT
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    d.department_name,
+    COUNT(r.registration_id) AS courses_assessed,
+    ROUND(AVG(r.score), 2) AS average_score,
+    MAX(r.score) AS highest_score,
+    MIN(r.score) AS lowest_score
+FROM students s
+INNER JOIN departments d
+    ON s.department_id = d.department_id
+INNER JOIN course_registrations cr
+    ON s.student_id = cr.student_id
+INNER JOIN results r
+    ON cr.registration_id = r.registration_id
+GROUP BY
+    s.student_id,
+    s.matric_number,
+    s.first_name,
+    s.last_name,
+    d.department_name
+ORDER BY average_score DESC;
+
+
+-- =========================================================
+-- END OF PORTFOLIO 2 SQL QUERIES
+-- =========================================================
