@@ -1,0 +1,11 @@
+COLUMN FAMILY: StudentResults
+
+ROW KEY: BFU2023001
+
+COLUMNS:
+  student_name: Grace Nwosu
+  academic_year: 2026/2027
+  BUS301.course_title: Business Management
+  BUS301.credit_units: 2
+  BUS301.semester: 1
+  BUS301.score: 72
