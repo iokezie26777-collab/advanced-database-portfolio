@@ -1,0 +1,17 @@
+[
+  {
+    "matric_number": "BFU2023001",
+    "first_name": "Grace",
+    "last_name": "Nwosu",
+    "admission_year": 2023,
+    "course_registrations": [
+      {
+        "course_code": "BUS301",
+        "course_title": "Business Management",
+        "credit_units": 2,
+        "academic_year": "2026/2027",
+        "semester": 1
+      }
+    ]
+  }
+]
