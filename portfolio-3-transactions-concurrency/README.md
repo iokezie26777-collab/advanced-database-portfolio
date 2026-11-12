@@ -63,12 +63,13 @@ portfolio-3-transactions-concurrency/
 ├── sql-scripts/
 │   └── portfolio3_transactions.sql
 │
-└── screenshots/
-    ├── commit-transaction.png
-    ├── rollback-transaction.png
-    ├── transaction-isolation.png
-    ├── concurrency-lock-wait.png
-    └── concurrency-result.png
+screenshots/
+├── commit-transaction.png
+├── rollback-transaction.png
+├── concurrency-lock-wait.png
+├── concurrency-test-result.png
+├── transaction-test-01.png
+└── transaction-test-02.png
 ```
 
 ## 6. Conclusion
