@@ -1,1 +1,8 @@
+KEY: BFU2023001
 
+VALUE:
+{
+  "student_name": "Grace Nwosu",
+  "session_status": "active",
+  "academic_year": "2026/2027"
+}
