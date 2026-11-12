@@ -1,0 +1,104 @@
+
+-- =====================================================
+-- PORTFOLIO 3: TRANSACTIONS AND CONCURRENCY
+-- Database: Bright Future University Student Management
+-- =====================================================
+
+
+-- 1. CREATE TRANSACTION TEST TABLE
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS transaction_test (
+    test_id SERIAL PRIMARY KEY,
+    student_name VARCHAR(100),
+    test_remark VARCHAR(100)
+);
+
+
+-- 2. COMMIT TRANSACTION
+-- =====================================================
+-- Insert John Okafor and permanently save the record.
+
+BEGIN;
+
+INSERT INTO transaction_test (student_name, test_remark)
+SELECT 'John Okafor', 'COMMIT transaction test'
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM transaction_test
+    WHERE student_name = 'John Okafor'
+);
+
+COMMIT;
+
+SELECT * FROM transaction_test;
+
+
+-- 3. ROLLBACK TRANSACTION
+-- =====================================================
+-- Insert Mary Adeyemi, then cancel the insertion.
+
+BEGIN;
+
+INSERT INTO transaction_test (student_name, test_remark)
+VALUES ('Mary Adeyemi', 'ROLLBACK transaction test');
+
+ROLLBACK;
+
+-- Mary should not appear in the table.
+SELECT * FROM transaction_test;
+
+
+-- 4. TRANSACTION ISOLATION
+-- =====================================================
+-- Set the isolation level to REPEATABLE READ.
+
+BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+SELECT current_setting('transaction_isolation');
+
+COMMIT;
+
+
+-- 5. CONCURRENCY CONTROL: ROW LOCKING
+-- =====================================================
+-- IMPORTANT: Execute the following sections separately
+-- using TWO Query Tool sessions.
+
+
+-- SESSION 1:
+-- Run this first and leave the transaction open.
+
+BEGIN;
+
+SELECT *
+FROM transaction_test
+WHERE student_name = 'John Okafor'
+FOR UPDATE;
+
+-- After Session 2 starts waiting, return here and run:
+-- COMMIT;
+
+
+-- SESSION 2:
+-- Open another Query Tool and execute this while
+-- Session 1 is still holding the row lock.
+
+UPDATE transaction_test
+SET test_remark = 'Concurrency test'
+WHERE student_name = 'John Okafor';
+
+-- This update should wait until Session 1 commits.
+
+
+-- 6. VERIFY CONCURRENCY RESULT
+-- =====================================================
+
+SELECT *
+FROM transaction_test
+WHERE student_name = 'John Okafor';
+
+
+-- =====================================================
+-- END OF PORTFOLIO 3
+-- =====================================================
